@@ -7,7 +7,7 @@ app.get('/login', (req, res) => {
 
   const loginParams = new URLSearchParams({
     client_id: 'fullcycle-client',
-    redirect_uri: 'http://localhost:3000/callback',
+    redirect_uri: 'http://localhost:3000/test',
     response_type: 'code',
     scope: 'openid'
   });
@@ -17,14 +17,21 @@ app.get('/login', (req, res) => {
   console.log('Redirecting to:', url);
   res.redirect(url);
 });
-
+// /login -> redireciona para o Keycloak (formulario de login) --> /callback?code=XXXX  --> keycloak (devolve o token)
 app.get('/callback', async (req, res) => {
+
+  // //@ts-expect-error - type mismatch
+  // if (!req.session.user) {
+  //   return res.redirect('/admin');
+  // }
+
+  console.log(req.query);
 
   const bodyParams = new URLSearchParams({
     client_id: 'fullcycle-client',
     grant_type: 'authorization_code',
     code: req.query.code as string,
-    redirect_uri: 'http://localhost:3000/callback',
+    redirect_uri: 'http://localhost:3000/test',
   });
 
   const url = `http://host.docker.internal:8080/realms/fullcycle-realm/protocol/openid-connect/token`;
