@@ -1,0 +1,22 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - HTTPS_PROXY=http://192.168.100.1:8080
+      - HTTP_PROXY=http://192.168.100.1:8080
+      - NO_PROXY=localhost,127.0.0.1,::1,.local,172.17.0.1,host.docker.internal
+    dns:
+      - 172.16.112.242
+      - 8.8.8.8   # DNS do Google
+      # - 1.1.1.1   # DNS da CloudFlare
+    volumes:
+      - .:/home/node/app
+    user: node
+    extra_hosts:
+      # - "host.docker.internal:172.17.0.1"
+      - "host.docker.internal:host-gateway"
+    network_mode: "host"
