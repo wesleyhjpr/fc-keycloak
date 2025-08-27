@@ -32,8 +32,11 @@ const middlewareIsAuth = (
 app.get('/login', (req, res) => {
 
   const nonce = crypto.randomBytes(16).toString("base64");
+  const state = crypto.randomBytes(16).toString("base64");
   //@ts-expect-error - type mismatch
   req.session.nonce = nonce;
+  //@ts-expect-error - type mismatch
+  req.session.state = state;
   req.session.save();
 
   // valor aleatório - sessão de usuário
@@ -42,7 +45,8 @@ app.get('/login', (req, res) => {
     redirect_uri: "http://localhost:3000/callback",
     response_type: "code",
     scope: "openid",
-    nonce
+    nonce,
+    state
   });
 
   const url = `http://localhost:8080/realms/fullcycle-realm/protocol/openid-connect/auth?${loginParams.toString()}`;
@@ -73,6 +77,11 @@ app.get('/callback', async (req, res) => {
   //@ts-expect-error - type mismatch
   if (req.session.user) {
     return res.redirect('/admin');
+  }
+
+  //@ts-expect-error - type mismatch
+  if(req.query.state !== req.session.state){
+    return res.status(401).json({message: 'Unauthorized - State does not match'});
   }
 
   console.log(req.query);
