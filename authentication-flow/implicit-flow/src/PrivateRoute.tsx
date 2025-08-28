@@ -1,4 +1,4 @@
-import { PropsWithChildren, useContext } from "react";
+import { useContext, type PropsWithChildren } from "react";
 import { AuthContext } from "./AuthProvider";
 import { Navigate } from "react-router-dom";
 

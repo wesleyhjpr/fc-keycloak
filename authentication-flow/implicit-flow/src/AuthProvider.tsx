@@ -1,6 +1,6 @@
-import { PropsWithChildren, createContext, useCallback, useState } from "react";
+import { createContext, useCallback, useState, type PropsWithChildren } from "react";
 import * as utils from "./utils";
-import { JWTPayload } from "jose";
+import type { JWTPayload } from "jose";
 
 type AuthContextProps = {
   auth: JWTPayload | null;

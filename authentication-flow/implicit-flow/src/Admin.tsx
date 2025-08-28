@@ -1,8 +1,13 @@
+import { useContext } from "react";
+import { AuthContext } from "./AuthProvider";
+
 export function Admin() {
-    return (
-        <div>
-        <h1>Admin Page</h1>
-        <p>Welcome to the admin section.</p>
-        </div>
-    );
+  const { auth } = useContext(AuthContext);
+
+  return (
+    <div>
+      <h1>Admin</h1>
+      <pre>{JSON.stringify(auth)}</pre>
+    </div>
+  );
 }
