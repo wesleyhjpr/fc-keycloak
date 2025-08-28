@@ -76,6 +76,7 @@ export function makeLogoutUrl() {
 
   Cookies.remove("access_token");
   Cookies.remove("id_token");
+  Cookies.remove("refresh_token");
   Cookies.remove("nonce");
   Cookies.remove("state");
 
