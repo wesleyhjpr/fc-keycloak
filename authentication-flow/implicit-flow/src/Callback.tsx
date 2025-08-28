@@ -1,14 +1,31 @@
-import { useLocation } from "react-router-dom";
+import { useContext, useEffect } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import { AuthContext } from "./AuthProvider";
 
 export function Callback() {
 
-   const { hash } = useLocation();
+  const { hash } = useLocation();
+  const { login, auth } = useContext(AuthContext);
+  const navigate = useNavigate();
 
-   console.log("Callback hash:", hash);
-    return (
-        <div>
-        <h1>Callback Page</h1>
-        <p>Handling authentication callback...</p>
-        </div>
-    );
+  useEffect(() => {
+    if (auth) {
+      navigate("/login");
+      return;
+    }
+
+    const searchParams = new URLSearchParams(hash.replace("#", ""));
+    const accessToken = searchParams.get("access_token") as string;
+    const idToken = searchParams.get("id_token") as string;
+    const state = searchParams.get("state") as string;
+
+    if (!accessToken || !idToken || !state) {
+      navigate("/login");
+    }
+
+    login(accessToken, idToken, state);
+
+  }, [hash, login, auth, navigate]);
+
+  return <div>Loading...</div>;
 }
