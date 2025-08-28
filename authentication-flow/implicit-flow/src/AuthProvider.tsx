@@ -42,7 +42,10 @@ export const AuthProvider = (props: PropsWithChildren) => {
   const [data, setData] = useState({
     auth: utils.getAuth(),
     makeLoginUrl: utils.makeLoginUrl,
-    makeLogoutUrl: utils.makeLogoutUrl,
+    makeLogoutUrl: () => {
+      const url = utils.makeLogoutUrl();
+      return typeof url === "string" ? url : "";
+    },
     login: makeLogin,
   });
 
